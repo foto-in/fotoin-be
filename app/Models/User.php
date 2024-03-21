@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use App\Models\Photographer;
 
 class User extends Authenticatable
 {
@@ -21,9 +23,9 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'username',
-        'email',
         'password',
         'fullname',
+        'location',
         'profile_image'
     ];
 
@@ -50,7 +52,7 @@ class User extends Authenticatable
         ];
     }
 
-    public function Photographer()
+    public function Photographer() : HasOne
     {
         return $this->hasOne(Photographer::class);
     }

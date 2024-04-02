@@ -18,10 +18,13 @@ return new class extends Migration
             $table->string('no_hp');
             $table->string('no_telegram');
             $table->enum('type', ['personal', 'tim']);
-            $table->enum('specialization', ['wedding', 'product', 'nature', 'sport', 'travel', 'press event', 'concer']);
+            $table->json('specialization');
+            $table->json('camera');
             $table->timestamps();
         });
+
     }
+
 
     /**
      * Reverse the migrations.

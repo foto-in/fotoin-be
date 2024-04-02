@@ -27,6 +27,9 @@ class AuthController extends Controller
 
         $user->tokens()->delete();
         $token = $user->createToken('auth_token')->plainTextToken;
+        // saving token to database
+        $user->remember_token = $token;
+        $user->save();
         if ($isPhotographer){
             $photographer = Photographer::find($user->id)->user_id;
             return response()->json([
@@ -48,7 +51,6 @@ class AuthController extends Controller
                 ]
             ]);
         }
-
     }
 
     public function register(Request $request)
@@ -59,16 +61,12 @@ class AuthController extends Controller
             'password' => 'required|string|min:8',
         ]);
 
-        $input = $request->all();
         if ($validator->fails()){
             return response()->json(['error' => $validator->errors()], 401);
         }
 
-        $credentials['username'] = $input['username'];
-        $credentials['fullname'] = $input['fullname'];
-        $credentials['password'] = Hash::make($input['password']);
-        $credentials['id'] = Str::uuid();
-        $user = User::create($credentials);
+        $input = $request->all();
+        $user = User::create($input);
 
         if ($user){
             return response()->json([

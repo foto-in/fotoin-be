@@ -16,7 +16,7 @@ class UserAuth
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::guard('api')->check()) {
+        if (!$request->photographer()->id->exists()) {
             return $next($request);
         } else {
             $message = ["message" => "Permission Denied. You're not a Regular User."];

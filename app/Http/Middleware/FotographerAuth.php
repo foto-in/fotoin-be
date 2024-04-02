@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Photographer;
 
-class UserAuth
+class FotographerAuth
 {
     /**
      * Handle an incoming request.
@@ -17,11 +17,11 @@ class UserAuth
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $isPhotographer = Photographer::find($request->user_id);
-        if (!$isPhotographer) {
+        $isPhotographer = Photographer::find($request->photographer_id);
+        if ($isPhotographer) {
             return $next($request);
         } else {
-            $message = ["message" => "Permission Denied. You're not a Regular User."];
+            $message = ["message" => "Permission Denied. You're not a Photographer."];
             return response($message, 401);
         }
     }

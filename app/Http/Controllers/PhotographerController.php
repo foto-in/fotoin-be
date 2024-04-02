@@ -100,10 +100,12 @@ class PhotographerController extends Controller
                 ]);
             }
 
-            $photoName = $request->title . '_' . $i . '.' . explode('/', $mime_type)[1];
+            $photoName = str_replace(" ", "_", $request->title) . '_' . $i . '.' . explode('/', $mime_type)[1];
             Storage::put($directory . '/' . $photoName, $photo);
 
-            $photos[i] = Storage::url($directory . '/' . $photoName);
+            // get public url photo
+            $photos[$i] = asset(Storage::url($directory . '/' . $photoName));
+
         }
 
         $portofolio = new Portofolio();

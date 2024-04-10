@@ -27,4 +27,8 @@ Route::middleware(['every-request'])->group(function (){
         Route::post('/portofolio', [PhotographerController::class, 'uploadPortofolio']);
     });
 
+
+    Route::get('/portofolio/{username}', [PortofolioController::class, 'getAllPortofolio']);
+    Route::get('/portofolio/{username}/{id}', [PortofolioController::class, 'getDetailPortofolio']);
+
 });

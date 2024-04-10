@@ -20,7 +20,6 @@ return new class extends Migration
             $table->enum('type', ['personal', 'tim']);
             $table->json('specialization');
             $table->json('camera');
-            $table->timestamps();
         });
 
     }

@@ -50,7 +50,8 @@ class PhotographerController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Photographer created successfully',
-                'data' => $photographer
+                'data' => $photographer,
+                'user' => $user
             ]);
         } else {
             return response()->json([

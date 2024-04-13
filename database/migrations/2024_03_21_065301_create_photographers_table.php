@@ -20,6 +20,8 @@ return new class extends Migration
             $table->enum('type', ['personal', 'tim']);
             $table->json('specialization');
             $table->json('camera');
+            $table->integer('start_price');
+            $table->integer('end_price');
         });
 
     }

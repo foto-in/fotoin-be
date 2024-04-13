@@ -19,12 +19,23 @@ Route::middleware(['every-request'])->group(function (){
     // Only Authenticated User can access
     Route::middleware(['auth:sanctum', UserAuth::class])->group(function () {
         Route::post('/photographer', [PhotographerController::class, 'register']);
+
+        // Request to booking
+        Route::post('/booking', [BookingController::class, 'createBooking']);
     });
 
 
     // Only Photographer can access
     Route::middleware(['auth:sanctum', FotographerAuth::class])->group(function () {
         Route::post('/portofolio', [PhotographerController::class, 'uploadPortofolio']);
+        Route::get('/booking', [BookingController::class, 'getAllBookingPhotographer']);
+        Route::get('/booking/{id}', [BookingController::class, 'getDetailBookingPhotographer']);
+    });
+
+    // Only User can access
+    Route::middleware(['auth:sanctum', UserAuth::class])->group(function () {
+        Route::get('/booking', [BookingController::class, 'getAllBookingUser']);
+        Route::get('/booking/{id}', [BookingController::class, 'getDetailBookingUser']);
     });
 
 

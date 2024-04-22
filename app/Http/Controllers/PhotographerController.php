@@ -123,4 +123,30 @@ class PhotographerController extends Controller
         ]);
 
     }
+
+    public function searchPhotographer(Request $request)
+    {
+        $name = $request->query('name', null);
+        $specialization = $request->query('specialization', null);
+
+        $photographers = Photographer::query();
+
+        if ($name){
+            $photographers->whereHas('user', function($query) use ($name){
+                $query->where('fullname', 'like', '%' . $name . '%');
+            });
+        }
+
+        if ($specialization){
+            $photographers->whereJsonContains('specialization', $specialization);
+        }
+
+        $photographers = $photographers->get();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Photographer found',
+            'data' => $photographers
+        ]);
+    }
 }

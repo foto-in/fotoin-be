@@ -20,7 +20,7 @@ return new class extends Migration
             $table->dateTime('tanggal_booking');
             $table->integer('durasi');
             $table->string('konsep');
-            $table->enum('status', ['diterima', 'ditolak', 'selesai', 'menunggu', '']);
+            $table->enum('status', ['diterima', 'ditolak', 'selesai', 'menunggu', 'proses']);
             $table->integer('total_harga');
         });
     }

@@ -20,6 +20,8 @@ class Photographer extends Model
         'email',
         'camera',
         'specialization',
+        'start_price',
+        'end_price',
     ];
 
     protected $casts = [

@@ -96,8 +96,17 @@ class BookingController extends Controller
             'total_harga' => 'required',
         ]);
 
+        // check valid total_harga
+        $photographer = Photographer::find($request->photographer_id);
+        if ($request->total_harga < $photographer->start_price || $request->total_harga > $photographer->end_price) {
+            return response()->json([
+                'message' => 'Total harga tidak valid'
+            ], 400);
+        }
+
         $booking = Booking::create($request->all());
-        $booking->status = 'menunggu_dp';
+        $booking->total_dp = 10 * $booking->total_harga / 100;
+        $booking->status = 'menunggu_konfirmasi';
         return response()->json([
             'message' => 'Success',
             'data' => $booking

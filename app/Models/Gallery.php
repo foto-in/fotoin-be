@@ -4,16 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 
-class Payment extends Model
+class Gallery extends Model
 {
     use HasFactory, HasUuids;
 
     protected $fillable = [
-        'booking_id',
-        'status',
-        'total_payment',
-        'method_payment',
+        'user_id',
+        'photographer_id',
+        'images',
+        'total_images',
+        'duration',    
     ];
 }

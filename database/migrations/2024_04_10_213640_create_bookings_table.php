@@ -14,14 +14,16 @@ return new class extends Migration
         Schema::create('bookings', function (Blueprint $table) {
             $table->uuid('id')->primary()->unique();
             $table->foreignUuid('user_id');
+            $table->foreignUuid('photographer_id');
             $table->string('acara');
             $table->string('lokasi');
             $table->dateTime('sesi_foto');
             $table->dateTime('tanggal_booking');
             $table->integer('durasi');
             $table->string('konsep');
-            $table->enum('status', ['diterima', 'ditolak', 'selesai', 'menunggu_dp', 'menunggu_konfirmasi', 'proses', 'menunggu_pelunasan']);
+            $table->enum('status', ['ditolak', 'selesai', 'menunggu_dp', 'menunggu_konfirmasi', 'proses_editing', 'proses', 'menunggu_pelunasan']);
             $table->integer('total_harga');
+            $table->integer('total_dp');
         });
     }
 

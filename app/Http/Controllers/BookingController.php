@@ -97,6 +97,7 @@ class BookingController extends Controller
         ]);
 
         $booking = Booking::create($request->all());
+        $booking->status = 'menunggu_dp';
         return response()->json([
             'message' => 'Success',
             'data' => $booking
@@ -120,5 +121,6 @@ class BookingController extends Controller
         ]);
     }
 
-    
+
+
 }

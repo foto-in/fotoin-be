@@ -37,9 +37,8 @@ Route::middleware(['every-request'])->group(function (){
     Route::middleware(['auth:sanctum', UserAuth::class])->group(function () {
         Route::get('/booking', [BookingController::class, 'getAllBookingUser']);
         Route::get('/booking/{id}', [BookingController::class, 'getDetailBookingUser']);
-        Route::post('/payment', [PaymentController::class, 'createPayment']);
-        Route::get('/payment/{id}', [PaymentController::class, 'getTotalPrice']);
         Route::post('/booking', [BookingController::class, 'createBooking']);
+        Route::post('/payment/{booking_id}', [BookingController::class, 'changeStatusBooking']);
         Route::get('/gallery/{user_id}', [GalleryController::class, 'getAllGallery']);
         Route::get('/gallery/{user_id}/{id}', [GalleryController::class, 'getDetailGallery']);
     });

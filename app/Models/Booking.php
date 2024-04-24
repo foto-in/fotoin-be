@@ -27,6 +27,8 @@ class Booking extends Model
         'konsep',
         'total_dp',
         'total_harga',
+        'status',
+        'status_paid',
     ];
 
     public function user(): BelongsTo

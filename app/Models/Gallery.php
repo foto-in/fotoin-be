@@ -12,10 +12,16 @@ class Gallery extends Model
     use HasFactory, HasUuids;
 
     protected $fillable = [
+        'booking_id',
         'user_id',
         'photographer_id',
-        'images',
+        'name_photographer',
+        'photos',
         'total_images',
-        'duration',    
+        'duration',
+    ];
+
+    protected $casts = [
+        'photos' => 'array',
     ];
 }

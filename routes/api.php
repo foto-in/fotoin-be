@@ -8,6 +8,10 @@ use App\Http\Middleware\ForceJsonResponse;
 use App\Http\Controllers\PhotographerController;
 use App\Http\Middleware\FotographerAuth;
 use App\Http\Middleware\UserAuth;
+use App\Http\Controllers\BookingController;
+use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\PortofolioController;
+
 
 
 Route::middleware(['every-request'])->group(function (){
@@ -30,7 +34,8 @@ Route::middleware(['every-request'])->group(function (){
         Route::post('/portofolio', [PhotographerController::class, 'uploadPortofolio']);
         Route::get('/booking', [BookingController::class, 'getAllBookingPhotographer']);
         Route::get('/booking/{id}', [BookingController::class, 'getDetailBookingPhotographer']);
-        Route::post('/booking/{id}', [BookingController::class, 'updateStatusBooking']);
+        Route::post('/booking/{id}', [PhotographerController::class, 'acceptBooking']);
+        Route::post('/gallery/{booking_id}', [GalleryController::class, 'uploadOrder']);
     });
 
     // Only User can access
@@ -38,13 +43,14 @@ Route::middleware(['every-request'])->group(function (){
         Route::get('/booking', [BookingController::class, 'getAllBookingUser']);
         Route::get('/booking/{id}', [BookingController::class, 'getDetailBookingUser']);
         Route::post('/booking', [BookingController::class, 'createBooking']);
-        Route::post('/payment/{booking_id}', [BookingController::class, 'changeStatusBooking']);
+        Route::post('/payment/{booking_id}', [BookingController::class, 'payOrder']);
         Route::get('/gallery/{user_id}', [GalleryController::class, 'getAllGallery']);
         Route::get('/gallery/{user_id}/{id}', [GalleryController::class, 'getDetailGallery']);
+        Route::delete('/gallery/{user_id}/{id}', [GalleryController::class, 'deleteGallery']);
     });
 
 
-    Route::get('/portofolio/{username}', [PortofolioController::class, 'getAllPortofolio']);
-    Route::get('/portofolio/{username}/{id}', [PortofolioController::class, 'getDetailPortofolio']);
+    Route::get('/portofolio/{id}', [PortofolioController::class, 'getAllPortofolio']);
+    Route::get('/portofolio/{photographer_id}/{id}', [PortofolioController::class, 'getDetailPortofolio']);
 
 });

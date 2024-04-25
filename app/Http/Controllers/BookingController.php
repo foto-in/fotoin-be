@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Booking;
+use App\Models\Photographer;
+use App\Models\User;
+
 
 class BookingController extends Controller
 {
@@ -113,8 +117,22 @@ class BookingController extends Controller
         ]);
     }
 
-    public function changeStatusBooking($id, Request $request)
+    public function payOrder($id, Request $request)
     {
+
+        $request->validate([
+            'price' => 'required|numeric',
+            'method_payment' => 'required|string',
+        ]);
+
+        if ($request->method_payment != 'dummy'){
+            return response()->json([
+                'message' => 'Method payment not Available yet'
+            ], 400);
+        }
+
+
+
         $booking = Booking::find($id);
         if (!$booking) {
             return response()->json([
@@ -122,7 +140,19 @@ class BookingController extends Controller
             ], 404);
         }
 
-        $booking->status = $request->status;
+
+        if ($request->price != $booking->total_dp && $request->price != $booking->total_harga - $booking->total_dp){
+            return response()->json([
+                'message' => 'Price not valid'
+            ], 400);
+        }
+
+        if ($booking->status == 'menunggu_dp'){
+            $booking->status = 'proses';
+        } else if ($booking->status == 'menunggu_pelunasan'){
+            $booking->status = 'selesai';
+        }
+
         $booking->save();
         return response()->json([
             'message' => 'Success',

@@ -12,8 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('galleries', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary()->unique();
             $table->timestamps();
+            $table->foreignUuid('booking_id');
+            $table->foreignUuid('user_id');
+            $table->foreignUuid('photographer_id');
+            $table->string('name_photographer');
+            $table->json('photos');
+            $table->integer('total_images');
+            $table->integer('duration');
         });
     }
 

@@ -17,13 +17,15 @@ return new class extends Migration
             $table->foreignUuid('photographer_id');
             $table->string('acara');
             $table->string('lokasi');
-            $table->dateTime('sesi_foto');
-            $table->dateTime('tanggal_booking');
+            $table->string('sesi_foto');
+            $table->string('tanggal_booking');
             $table->integer('durasi');
             $table->string('konsep');
             $table->enum('status', ['ditolak', 'selesai', 'menunggu_dp', 'menunggu_konfirmasi', 'proses_editing', 'proses', 'menunggu_pelunasan']);
             $table->integer('total_harga');
             $table->integer('total_dp');
+            $table->boolean('status_paid');
+            $table->string('waktu_mulai');
         });
     }
 

@@ -21,8 +21,7 @@ Route::middleware(['every-request'])->group(function (){
     Route::post('/register', [AuthController::class, 'register']);
 
     // Only Authenticated User can access
-    Route::middleware(['auth:sanctum', UserAuth::class])->group(function () {
-        Route::post('/photographer', [PhotographerController::class, 'register']);
+    Route::middleware(['auth:sanctum'])->group(function () {
 
         // Request to booking
         Route::post('/booking', [BookingController::class, 'createBooking']);
@@ -40,9 +39,9 @@ Route::middleware(['every-request'])->group(function (){
 
     // Only User can access
     Route::middleware(['auth:sanctum', UserAuth::class])->group(function () {
+        Route::post('/photographer', [PhotographerController::class, 'register']);
         Route::get('/booking', [BookingController::class, 'getAllBookingUser']);
         Route::get('/booking/{id}', [BookingController::class, 'getDetailBookingUser']);
-        Route::post('/booking', [BookingController::class, 'createBooking']);
         Route::post('/payment/{booking_id}', [BookingController::class, 'payOrder']);
         Route::get('/gallery/{user_id}', [GalleryController::class, 'getAllGallery']);
         Route::get('/gallery/{user_id}/{id}', [GalleryController::class, 'getDetailGallery']);

@@ -27,6 +27,8 @@ class PhotographerController extends Controller
             'specialization.*' => 'required|string',
             'camera' => 'required|array',
             'camera.*' => 'required|string',
+            'start_price' => 'required|integer',
+            'end_price' => 'required|integer',
         ]);
 
         if ($validator->fails()){
@@ -36,14 +38,17 @@ class PhotographerController extends Controller
         $user = User::find($request->user_id);
         $user->username = $request->username;
         $user->fullname = $request->fullname;
+        $user->save();
 
-        $input['user_id'] = $user->id;
+        $input['user_id'] = $request->user_id;
         $input['email'] = $request->email;
         $input['no_hp'] = $request->no_hp;
         $input['no_telegram'] = $request->no_telegram;
         $input['type'] = $request->type;
         $input['specialization'] = $request->specialization;
         $input['camera'] = $request->camera;
+        $input['start_price'] = $request->start_price;
+        $input['end_price'] = $request->end_price;
         $photographer = Photographer::create($input);
 
         if ($photographer){

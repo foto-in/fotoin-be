@@ -29,6 +29,7 @@ class Booking extends Model
         'total_harga',
         'status',
         'status_paid',
+        'waktu_mulai',
     ];
 
     public function user(): BelongsTo
@@ -40,4 +41,5 @@ class Booking extends Model
     {
         return $this->hasOne(Payment::class);
     }
+    public $timestamps = false;
 }

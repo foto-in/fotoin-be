@@ -43,4 +43,6 @@ class Photographer extends Model
     {
         return $this->hasMany(Booking::class);
     }
+
+    public $timestamps = false;
 }

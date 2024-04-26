@@ -91,13 +91,14 @@ class BookingController extends Controller
         $request->validate([
             'user_id' => 'required',
             'photographer_id' => 'required',
-            'acara' => 'required',
-            'lokasi' => 'required',
-            'sesi_foto' => 'required',
-            'tanggal_booking' => 'required',
-            'durasi' => 'required',
-            'konsep' => 'required',
-            'total_harga' => 'required',
+            'acara' => 'required|string',
+            'lokasi' => 'required|string',
+            'sesi_foto' => 'required|string',
+            'tanggal_booking' => 'required|string',
+            'durasi' => 'required|numeric',
+            'konsep' => 'required|string',
+            'total_harga' => 'required|numeric',
+            'waktu_mulai' => 'required|string',
         ]);
 
         // check valid total_harga
@@ -108,9 +109,21 @@ class BookingController extends Controller
             ], 400);
         }
 
-        $booking = Booking::create($request->all());
-        $booking->total_dp = 10 * $booking->total_harga / 100;
-        $booking->status = 'menunggu_konfirmasi';
+        $input['user_id'] = $request->user_id;
+        $input['photographer_id'] = $request->photographer_id;
+        $input['acara'] = $request->acara;
+        $input['lokasi'] = $request->lokasi;
+        $input['sesi_foto'] = $request->sesi_foto;
+        $input['tanggal_booking'] = $request->tanggal_booking;
+        $input['durasi'] = $request->durasi;
+        $input['konsep'] = $request->konsep;
+        $input['total_harga'] = $request->total_harga;
+        $input['status'] = 'menunggu_konfirmasi';
+        $input['total_dp'] = 10 * $request->total_harga / 100;
+        $input['status_paid'] = false;
+        $input['waktu_mulai'] = $request->waktu_mulai;
+        
+        $booking = Booking::create($input);
         return response()->json([
             'message' => 'Success',
             'data' => $booking

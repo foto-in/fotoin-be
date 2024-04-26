@@ -26,4 +26,5 @@ class Portofolio extends Model
     {
         return $this->BelongsTo(Photographer::class);
     }
+    public $timestamps = false;
 }

@@ -16,12 +16,12 @@ class PhotographerController extends Controller
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'username' => 'required|string|max:50|unique:users',
+            'username' => 'required|string',
             'fullname' => 'required|string|max:100',
             'email' => 'required|email|unique:photographers,email',
             'no_hp' => 'required|string',
             'no_telegram' => 'required|string',
-            'type' => 'required|in:personal,tim',
+            'type' => 'required|in:individu,tim',
             'specialization' => 'required|array',
             'specialization.*' => 'required|string',
             'camera' => 'required|array',
@@ -34,23 +34,20 @@ class PhotographerController extends Controller
 
         if ($user) {
             $token = $user->remember_token;
-            
+
         } else {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
-
-        $user = User::where('remember_token', $token)->first();
 
         if ($validator->fails()){
             return response()->json(['error' => $validator->errors()], 401);
         }
 
-        $user = User::find($user->user_id);
         $user->username = $request->username;
         $user->fullname = $request->fullname;
         $user->save();
 
-        $input['user_id'] = $request->user_id;
+        $input['user_id'] = $user->id;
         $input['email'] = $request->email;
         $input['no_hp'] = $request->no_hp;
         $input['no_telegram'] = $request->no_telegram;
@@ -77,8 +74,28 @@ class PhotographerController extends Controller
     }
 
     public function uploadPortofolio(PortofolioRequest $request)
-    {
-        $photographer = Photographer::find($request->photographer_id);
+    {   
+
+        $user = $request->user(); 
+
+        if ($user) {
+            $token = $user->remember_token;
+            
+        } else {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        $isPhotographer = Photographer::where('user_id', $user->id)->first();
+
+        if (!$isPhotographer){
+            return response()->json([
+                'success' => false,
+                'message' => 'You are not a photographer'
+            ]);
+        }
+
+
+        $photographer = Photographer::find($isPhotographer->id);
 
         if (!$photographer){
             return response()->json([

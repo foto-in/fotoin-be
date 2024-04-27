@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('no_hp');
             $table->string('no_telegram');
-            $table->enum('type', ['personal', 'tim']);
+            $table->enum('type', ['individu', 'tim']);
             $table->json('specialization');
             $table->json('camera');
             $table->integer('start_price');

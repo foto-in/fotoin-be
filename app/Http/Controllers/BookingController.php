@@ -133,7 +133,7 @@ class BookingController extends Controller
             ], 400);
         }
 
-        $input['user_id'] = $user->user_id;
+        $input['user_id'] = $user->id;
         $input['photographer_id'] = $request->photographer_id;
         $input['acara'] = $request->acara;
         $input['lokasi'] = $request->lokasi;

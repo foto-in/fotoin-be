@@ -22,7 +22,6 @@ class PortofolioRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'photographer_id' => 'required|uuid|exists:photographers,id',
             'title' => 'required|string',
             'description' => 'required|string',
             'photos' => 'required|array',

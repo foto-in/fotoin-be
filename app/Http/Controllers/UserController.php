@@ -23,19 +23,8 @@ class UserController extends Controller
         ]);
     }
 
-    public function updateDetailUser(Request $request, $username)
+    public function updateDetailUser(Request $request, $id)
     {
-        $user = User::where('username', $username)->first();
-        if (!$user) {
-            return response()->json([
-                'message' => 'User not found'
-            ], 404);
-        }
-
-        $user->update($request->all());
-        return response()->json([
-            'message' => 'User updated successfully',
-            'data' => $user
-        ]);
+        
     }
 }

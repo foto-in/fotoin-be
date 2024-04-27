@@ -32,7 +32,7 @@ Route::middleware(['every-request'])->group(function (){
     Route::middleware(['auth:sanctum', FotographerAuth::class])->group(function () {
         Route::post('/portofolio', [PhotographerController::class, 'uploadPortofolio']);
         Route::get('/booking/{id}', [BookingController::class, 'getDetailBookingPhotographer']);
-        Route::post('/booking/{booking_id}', [BookingController::class, 'acceptOrder']);
+        Route::patch('/booking/{booking_id}', [BookingController::class, 'acceptOrder']);
         Route::post('/gallery/{booking_id}', [GalleryController::class, 'uploadOrder']);
         Route::post('/preview/{booking_id}', [GalleryController::class, 'uploadPreview']);
     });

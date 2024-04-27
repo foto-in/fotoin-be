@@ -26,6 +26,7 @@ return new class extends Migration
             $table->integer('total_dp');
             $table->boolean('status_paid');
             $table->string('waktu_mulai');
+            $table->string('alasan_ditolak')->nullable();
         });
     }
 

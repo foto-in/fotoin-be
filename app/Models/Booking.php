@@ -30,6 +30,7 @@ class Booking extends Model
         'status',
         'status_paid',
         'waktu_mulai',
+        'alasan_ditolak',
     ];
 
     public function user(): BelongsTo

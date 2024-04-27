@@ -103,7 +103,6 @@ class BookingController extends Controller
     public function createBooking(Request $request)
     {
         $request->validate([
-            'user_id' => 'required',
             'photographer_id' => 'required',
             'acara' => 'required|string',
             'lokasi' => 'required|string',
@@ -115,6 +114,17 @@ class BookingController extends Controller
             'waktu_mulai' => 'required|string',
         ]);
 
+        $user = $request->user(); 
+
+        if ($user) {
+            $token = $user->remember_token;
+            
+        } else {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        $user = User::where('remember_token', $token)->first();
+
         // check valid total_harga
         $photographer = Photographer::find($request->photographer_id);
         if ($request->total_harga < $photographer->start_price || $request->total_harga > $photographer->end_price) {
@@ -123,7 +133,7 @@ class BookingController extends Controller
             ], 400);
         }
 
-        $input['user_id'] = $request->user_id;
+        $input['user_id'] = $user->user_id;
         $input['photographer_id'] = $request->photographer_id;
         $input['acara'] = $request->acara;
         $input['lokasi'] = $request->lokasi;
@@ -223,6 +233,7 @@ class BookingController extends Controller
         if ($request->confirmation){
             $booking->status = 'menunggu_dp';
         } else {
+            $booking->alasan_ditolak = $request->alasan_ditolak;
             $booking->status = 'ditolak';
         }
 

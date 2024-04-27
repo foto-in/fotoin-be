@@ -16,7 +16,6 @@ class PhotographerController extends Controller
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'user_id' => 'required|uuid|exists:users,id',
             'username' => 'required|string|max:50|unique:users',
             'fullname' => 'required|string|max:100',
             'email' => 'required|email|unique:photographers,email',
@@ -31,11 +30,22 @@ class PhotographerController extends Controller
             'end_price' => 'required|integer',
         ]);
 
+        $user = $request->user(); 
+
+        if ($user) {
+            $token = $user->remember_token;
+            
+        } else {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        $user = User::where('remember_token', $token)->first();
+
         if ($validator->fails()){
             return response()->json(['error' => $validator->errors()], 401);
         }
 
-        $user = User::find($request->user_id);
+        $user = User::find($user->user_id);
         $user->username = $request->username;
         $user->fullname = $request->fullname;
         $user->save();

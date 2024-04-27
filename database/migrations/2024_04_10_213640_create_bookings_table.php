@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('tanggal_booking');
             $table->integer('durasi');
             $table->string('konsep');
-            $table->enum('status', ['ditolak', 'selesai', 'menunggu_dp', 'menunggu_konfirmasi', 'proses_editing', 'proses', 'menunggu_pelunasan']);
+            $table->enum('status', ['ditolak', 'selesai', 'menunggu_dp', 'menunggu_konfirmasi', 'proses', 'menunggu_pelunasan']);
             $table->integer('total_harga');
             $table->integer('total_dp');
             $table->boolean('status_paid');

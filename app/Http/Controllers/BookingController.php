@@ -161,9 +161,55 @@ class BookingController extends Controller
         }
 
         if ($booking->status == 'menunggu_dp'){
+            // check the price should be 10% of total_harga
+            if ($request->price != $booking->total_dp){
+                return response()->json([
+                    'message' => 'Price not valid'
+                ], 400);
+            }
+
             $booking->status = 'proses';
         } else if ($booking->status == 'menunggu_pelunasan'){
+            // check the price should be 90% of total_harga
+            if ($request->price != $booking->total_harga - $booking->total_dp){
+                return response()->json([
+                    'message' => 'Price not valid'
+                ], 400);
+            }
+
             $booking->status = 'selesai';
+            $booking->status_paid = true;
+        } else {
+            return response()->json([
+                'message' => 'Booking not valid'
+            ], 400);
+        }
+
+        $booking->save();
+        return response()->json([
+            'message' => 'Payment Success',
+            'data' => $booking
+        ]);
+    }
+
+    public function acceptOrder($booking_id, Request $request)
+    {
+
+        $request->validate([
+            'confirmation' => 'required|boolean',
+        ]);
+
+        $booking = Booking::find($booking_id);
+        if (!$booking) {
+            return response()->json([
+                'message' => 'Booking not found'
+            ], 404);
+        }
+
+        if ($request->confirmation){
+            $booking->status = 'menunggu_dp';
+        } else {
+            $booking->status = 'ditolak';
         }
 
         $booking->save();

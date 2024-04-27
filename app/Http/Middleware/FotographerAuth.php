@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 use App\Models\Photographer;
 
 class FotographerAuth
@@ -17,7 +18,20 @@ class FotographerAuth
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $isPhotographer = Photographer::find($request->photographer_id);
+        
+        $user = $request->user(); 
+
+        if ($user) {
+            $token = $user->remember_token;
+            
+        } else {
+            
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        $user = User::where('remember_token', $token)->first();
+        $isPhotographer = Photographer::where('user_id', $user->id);
+        
         if ($isPhotographer) {
             return $next($request);
         } else {

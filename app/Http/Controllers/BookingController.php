@@ -10,22 +10,6 @@ use App\Models\User;
 
 class BookingController extends Controller
 {
-    public function getAllBookingPhotographer($username)
-    {
-        $photographer = Photographer::where('username', $username)->first();
-        if (!$photographer) {
-            return response()->json([
-                'message' => 'Photographer not found'
-            ], 404);
-        }
-
-        $bookings = Booking::where('photographer_id', $photographer->id)->get();
-        return response()->json([
-            'message' => 'Success',
-            'data' => $bookings
-        ]);
-    }
-
     public function getDetailBookingPhotographer($username, $id)
     {
         $photographer = Photographer::where('username', $username)->first();
@@ -48,16 +32,46 @@ class BookingController extends Controller
         ]);
     }
 
-    public function getAllBookingUser($username)
+    public function getAllBooking(Request $request)
     {
-        $user = User::where('username', $username)->first();
+        $user = $request->user(); 
+
+        if ($user) {
+            $token = $user->remember_token;
+            
+        } else {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        $user = User::where('remember_token', $token)->first();
+        $isPhotographer = Photographer::where('user_id', $user->id)->first();
+
+
         if (!$user) {
             return response()->json([
                 'message' => 'User not found'
             ], 404);
         }
 
-        $bookings = Booking::where('user_id', $user->id)->get();
+        $request->query('status', null);
+        
+        // check is the user photographer or client
+        if ($isPhotographer) {
+           if ($request->status){
+                $bookings = Booking::where('photographer_id', $isPhotographer->id)->where('status', $request->status)->get();
+                $bookings['is_photographer'] = "YES I AM";
+            } else {
+                $bookings = Booking::where('photographer_id', $isPhotographer->id)->get();
+                $bookings['is_photographer'] = "YES I AM";
+            }
+        } else {
+            if ($request->status){
+                $bookings = Booking::where('user_id', $user->id)->where('status', $request->status)->get();
+            } else {
+                $bookings = Booking::where('user_id', $user->id)->get();
+            }
+        }
+
         return response()->json([
             'message' => 'Success',
             'data' => $bookings

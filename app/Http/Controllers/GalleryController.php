@@ -232,9 +232,35 @@ class GalleryController extends Controller
         ]);
     }
 
-    public function deleteGallery($id)
+    public function deleteGallery($booking_id, Request $request)
     {
-        $gallery = Gallery::find($id);
+
+        $user = $request->user(); 
+
+        if ($user) {
+            $token = $user->remember_token;
+            
+        } else {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        // check if the user is photographer or client
+        $user = User::where('remember_token', $token)->first();
+        $isPhotographer = Photographer::where('user_id', $user->id)->first();
+        if ($isPhotographer) {
+            return response()->json([
+                'message' => 'Photographer cannot delete gallery'
+            ], 401);
+        }
+
+        // check if the user is the owner of the gallery
+        if ($user->id != $booking->user_id) {
+            return response()->json([
+                'message' => 'You are not authorized to delete this gallery'
+            ], 401);
+        }
+
+        $gallery = Gallery::where('booking_id', $booking_id)->first();
 
         if (!$gallery) {
             return response()->json([

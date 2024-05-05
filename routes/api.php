@@ -11,19 +11,22 @@ use App\Http\Middleware\UserAuth;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\PortofolioController;
+use App\Http\Controllers\UserController;
 
 
 
 Route::middleware(['every-request'])->group(function (){
 
     // Authentication
-    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/login', [AuthController::class, 'login'])->name('login');
     Route::post('/register', [AuthController::class, 'register']);
 
     // Only Authenticated User can access
     Route::middleware(['auth:sanctum'])->group(function () {
 
         Route::get('/booking', [BookingController::class, 'getAllBooking']);
+        Route::get('/user', [UserController::class, 'getProfileUser']);
+        Route::put('/user', [UserController::class, 'updateProfileUser']);
 
     });
 

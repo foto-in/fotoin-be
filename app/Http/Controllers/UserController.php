@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Storage;
 
 
 class UserController extends Controller
@@ -30,9 +31,38 @@ class UserController extends Controller
         $isPhotographer = $user->Photographer()->exists();
 
         $request->validate([
-            'username' => 'required',
-            'fullname' => 'required',
+            'username' => 'required|string',
+            'fullname' => 'required|string',
+            'profile_image' => 'required|string',
         ]);
+
+        // process profile_image
+        if (!Storage::exists('public/users/')) {
+            Storage::makeDirectory('public/users/');
+        }
+
+        $directory = 'public/users';
+
+        $photoBase64 = $request->profile_image;
+        $photo = base64_decode($photoBase64);
+
+        // get photo mime type
+        $f = finfo_open();
+        $mime_type = finfo_buffer($f, $photo, FILEINFO_MIME_TYPE);
+        finfo_close($f);
+
+        // check the image is valid
+        if (!in_array($mime_type, ['image/jpeg', 'image/png'])) {
+            return response()->json([
+                'message' => 'Photo must be jpeg or png'
+            ], 400);
+        }
+
+        $photoName = str_replace("-", "_", $user->id) . '.' . explode('/', $mime_type)[1];
+        Storage::put($directory . '/' . $photoName, $photo);
+
+        // get public url photographer
+        $profilePicture = asset(Storage::url($directory . '/' . $photoName));
 
         $username = $request->username;
         $fullname = $request->fullname;
@@ -41,7 +71,8 @@ class UserController extends Controller
             $user->update([
                 'username' => $username,
                 'fullname' => $fullname,
-                'email' => $email
+                'email' => $email,
+                'profile_image' => $profilePicture,
             ]);
             return response()->json([
                 'message' => 'User updated successfully',
@@ -52,6 +83,7 @@ class UserController extends Controller
         $user->update([
             'username' => $username,
             'fullname' => $fullname,
+            'profile_image' => $profilePicture,
         ]);
 
         return response()->json([

@@ -181,8 +181,27 @@ class GalleryController extends Controller
 
 
 
-    public function getDetailGallery($user_id, $booking_id)
+    public function getDetailGallery(Request $request, $booking_id)
     {
+
+        $user = $request->user();
+
+        if ($user) {
+            $token = $user->remember_token;
+
+        } else {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        $user = User::where('remember_token', $token)->first();
+
+        if (!$user) {
+            return response()->json([
+                'message' => 'User not found'
+            ], 404);
+        }
+
+        $user_id = $user->id;
 
         $booking = Booking::find($booking_id);
 
@@ -207,8 +226,28 @@ class GalleryController extends Controller
         ]);
     }
 
-    public function getAllGallery($user_id)
+    public function getAllGallery(Request $request)
     {
+
+        $user = $request->user();
+
+        if ($user) {
+            $token = $user->remember_token;
+
+        } else {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        $user = User::where('remember_token', $token)->first();
+
+        if (!$user) {
+            return response()->json([
+                'message' => 'User not found'
+            ], 404);
+        }
+
+        $user_id = $user->id;
+
         $galleries = Gallery::where('user_id', $user_id)->get();
 
         $return = [];

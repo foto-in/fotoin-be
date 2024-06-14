@@ -67,8 +67,12 @@ class AuthController extends Controller
 
         $input = $request->all();
         $user = User::create($input);
-
+        $token = $user->createToken('auth_token')->plainTextToken;
+        // saving token to database
+        $user->remember_token = $token;
+        $user->save();
         if ($user){
+            $user['token'] = $token;
             return response()->json([
                 'success' => true,
                 'message' => 'User created successfully',

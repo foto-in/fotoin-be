@@ -156,6 +156,51 @@ class PhotographerController extends Controller
 
     }
 
+    public function getAllPhotographer()
+    {
+        $photographers = Photographer::all();
+
+        foreach ($photographers as $photographer){
+            $photographer['name'] = $photographer->user->fullname;
+            $photographer['profile_image'] = $photographer->user->profile_image;
+            $photographer['portofolios'] = $this->getPortofolio($photographer->id);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Photographer found',
+            'data' => $photographers
+        ]);
+    }
+
+    private function getPortofolio($photographer_id)
+    {
+        $portofolios = Portofolio::where('photographer_id', $photographer_id)->get();
+        return $portofolios;
+    }
+
+    public function getDetailPhotographer($id)
+    {
+        $photographer = Photographer::find($id);
+
+        if (!$photographer){
+            return response()->json([
+                'success' => false,
+                'message' => 'Photographer not found'
+            ]);
+        }
+
+        $photographer['name'] = $photographer->user->fullname;
+        $photographer['profile_image'] = $photographer->user->profile_image;
+        $photographer['portofolios'] = $this->getPortofolio($photographer->id);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Photographer found',
+            'data' => $photographer
+        ]);
+    }
+
     public function searchPhotographer(Request $request)
     {
         $name = $request->query('name', null);
@@ -174,6 +219,12 @@ class PhotographerController extends Controller
         }
 
         $photographers = $photographers->get();
+
+        foreach ($photographers as $photographer){
+            $photographer['name'] = $photographer->user->fullname;
+            $photographer['profile_image'] = $photographer->user->profile_image;
+            $photographer['portofolios'] = $this->getPortofolio($photographer->id);
+        }
 
         return response()->json([
             'success' => true,

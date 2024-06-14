@@ -46,9 +46,9 @@ Route::middleware(['every-request'])->group(function (){
         Route::post('/booking', [BookingController::class, 'createBooking']);
         Route::post('/payment/{booking_id}', [BookingController::class, 'payOrder']);
         Route::get('/preview/{booking_id}', [GalleryController::class, 'getPreviewGallery']);
-        Route::get('/gallery/{user_id}/{booking_id}', [GalleryController::class, 'getDetailGallery']);
-        Route::get('/gallery/{user_id}', [GalleryController::class, 'getAllGallery']);
-        Route::delete('/gallery/{user_id}/{booking_id}', [GalleryController::class, 'deleteGallery']);
+        Route::get('/gallery/{booking_id}', [GalleryController::class, 'getDetailGallery']);
+        Route::get('/gallery', [GalleryController::class, 'getAllGallery']);
+        Route::delete('/gallery/{booking_id}', [GalleryController::class, 'deleteGallery']);
     });
 
 

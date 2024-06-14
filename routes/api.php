@@ -36,6 +36,7 @@ Route::middleware(['every-request'])->group(function (){
         Route::post('/portofolio', [PhotographerController::class, 'uploadPortofolio']);
         Route::get('/booking/{id}', [BookingController::class, 'getDetailBookingPhotographer']);
         Route::patch('/booking/{booking_id}', [BookingController::class, 'acceptOrder']);
+        Route::delete('/booking/{booking_id}', [BookingController::class, 'rejectOrder']);
         Route::post('/gallery/{booking_id}', [GalleryController::class, 'uploadOrder']);
         Route::post('/preview/{booking_id}', [GalleryController::class, 'uploadPreview']);
     });

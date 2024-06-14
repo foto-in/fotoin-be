@@ -230,12 +230,35 @@ class BookingController extends Controller
             ], 404);
         }
 
-        if ($request->confirmation){
+        if ($request->confirmation == true){
             $booking->status = 'menunggu_dp';
-        } else {
-            $booking->alasan_ditolak = $request->alasan_ditolak;
-            $booking->status = 'ditolak';
         }
+
+        $booking->save();
+        return response()->json([
+            'message' => 'Success',
+            'data' => $booking
+        ]);
+    }
+
+    public function rejectOrder($booking_id, Request $request)
+    {
+
+        $request->validate([
+            'confirmation' => 'required|boolean',
+        ]);
+
+        $booking = Booking::find($booking_id);
+        if (!$booking) {
+            return response()->json([
+                'message' => 'Booking not found'
+            ], 404);
+        }
+
+        if ($request->confirmation == false){
+            $booking->status = 'ditolak';
+            $booking->alasan_ditolak = $request->alasan_ditolak;
+        } 
 
         $booking->save();
         return response()->json([

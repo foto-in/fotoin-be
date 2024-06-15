@@ -32,7 +32,7 @@ class BookingController extends Controller
             ], 404);
         }
         
-        if (!$isPhotographer) {
+        if ($isPhotographer) {
             $photographer = Photographer::find($isPhotographer->id);
             $booking['is_photographer'] = "YES I AM";
 

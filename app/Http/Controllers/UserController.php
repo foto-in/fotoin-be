@@ -118,7 +118,7 @@ class UserController extends Controller
         if ($isPhotographer) {
             $photographer = $user->Photographer()->first();
             $user['photographer'] = $photographer;
-            $first_portofolio = $photographer->Portofolio()->first();
+            $first_portofolio = Portofolio::where('photographer_id', $photographer->id)->first();
             $user['photographer']['portofolio'] = $first_portofolio;
             return response()->json([
                 'message' => 'Success',

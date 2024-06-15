@@ -51,8 +51,8 @@ Route::middleware(['every-request'])->group(function (){
         Route::post('/photographer', [PhotographerController::class, 'register']);
     });
 
-    Route::get('/photographer', [PhotographerController::class, 'getAllPhotographer']);
-    Route::get('/photographer/{id}', [PhotographerController::class, 'getDetailPhotographer']);
+    Route::get('/getallphotographer', [PhotographerController::class, 'getAllPhotographer']);
+    Route::get('/getphotographer/{id}', [PhotographerController::class, 'getDetailPhotographer']);
     Route::get('/portofolio/{id}', [PortofolioController::class, 'getAllPortofolio']);
     Route::get('/portofolio/{photographer_id}/{id}', [PortofolioController::class, 'getDetailPortofolio']);
     Route::get('/search', [PhotographerController::class, 'searchPhotographer']);

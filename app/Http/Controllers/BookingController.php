@@ -146,6 +146,12 @@ class BookingController extends Controller
         $input['total_dp'] = 10 * $request->total_harga / 100;
         $input['status_paid'] = false;
         $input['waktu_mulai'] = $request->waktu_mulai;
+        $input['nama_pemesan'] = $user->fullname;
+        
+        $photographer = Photographer::find($request->photographer_id);
+        $name_photographer = User::find($photographer->user_id);
+
+        $input['nama_photographer'] = $name_photographer->fullname;
         
         $booking = Booking::create($input);
         return response()->json([

@@ -19,6 +19,8 @@ class Booking extends Model
     protected $fillable = [
         'user_id',
         'photographer_id',
+        'nama_pemesan',
+        'nama_photographer',
         'acara',
         'lokasi',
         'sesi_foto',

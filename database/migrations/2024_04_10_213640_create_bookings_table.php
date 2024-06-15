@@ -15,6 +15,8 @@ return new class extends Migration
             $table->uuid('id')->primary()->unique();
             $table->foreignUuid('user_id');
             $table->foreignUuid('photographer_id');
+            $table->string('nama_pemesan');
+            $table->string('nama_photographer');
             $table->string('acara');
             $table->string('lokasi');
             $table->string('sesi_foto');

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Photographer;
+use App\Models\Portofolio;
 use Illuminate\Support\Facades\Storage;
 
 

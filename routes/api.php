@@ -28,6 +28,7 @@ Route::middleware(['every-request'])->group(function (){
         Route::get('/user', [UserController::class, 'getProfileUser']);
         Route::put('/user', [UserController::class, 'updateProfileUser']);
         Route::post('/booking', [BookingController::class, 'createBooking']);
+        Route::get('/booking/{id}', [BookingController::class, 'getDetailBookingPhotographer']);
         Route::post('/payment/{booking_id}', [BookingController::class, 'payOrder']);
         Route::get('/preview/{booking_id}', [GalleryController::class, 'getPreviewGallery']);
         Route::get('/gallery/{booking_id}', [GalleryController::class, 'getDetailGallery']);
@@ -39,7 +40,6 @@ Route::middleware(['every-request'])->group(function (){
     // Only Photographer can access
     Route::middleware(['auth:sanctum', FotographerAuth::class])->group(function () {
         Route::post('/portofolio', [PhotographerController::class, 'uploadPortofolio']);
-        Route::get('/booking/{id}', [BookingController::class, 'getDetailBookingPhotographer']);
         Route::patch('/booking/{booking_id}', [BookingController::class, 'acceptOrder']);
         Route::delete('/booking/{booking_id}', [BookingController::class, 'rejectOrder']);
         Route::post('/gallery/{booking_id}', [GalleryController::class, 'uploadOrder']);

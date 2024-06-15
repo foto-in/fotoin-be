@@ -27,8 +27,8 @@ Route::middleware(['every-request'])->group(function (){
         Route::get('/booking', [BookingController::class, 'getAllBooking']);
         Route::get('/user', [UserController::class, 'getProfileUser']);
         Route::put('/user', [UserController::class, 'updateProfileUser']);
+        Route::get('/booking/{booking_id}', [BookingController::class, 'getDetailBookingPhotographer']);
         Route::post('/booking', [BookingController::class, 'createBooking']);
-        Route::get('/booking/{id}', [BookingController::class, 'getDetailBookingPhotographer']);
         Route::post('/payment/{booking_id}', [BookingController::class, 'payOrder']);
         Route::get('/preview/{booking_id}', [GalleryController::class, 'getPreviewGallery']);
         Route::get('/gallery/{booking_id}', [GalleryController::class, 'getDetailGallery']);

@@ -10,26 +10,45 @@ use App\Models\User;
 
 class BookingController extends Controller
 {
-    public function getDetailBookingPhotographer($username, $id)
+    public function getDetailBookingPhotographer($booking_id)
     {
-        $photographer = Photographer::where('username', $username)->first();
-        if (!$photographer) {
-            return response()->json([
-                'message' => 'Photographer not found'
-            ], 404);
+        $user = $request->user(); 
+
+        if ($user) {
+            $token = $user->remember_token;
+            
+        } else {
+            return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        $booking = Booking::where('photographer_id', $photographer->id)->where('id', $id)->first();
+        $isPhotographer = Photographer::where('user_id', $user->id)->first();
+
+        
+        $booking = Booking::find($booking_id);
+
         if (!$booking) {
             return response()->json([
                 'message' => 'Booking not found'
             ], 404);
         }
+        
+        if (!$isPhotographer) {
+            $photographer = Photographer::find($isPhotographer->id);
+            $booking['is_photographer'] = "YES I AM";
 
-        return response()->json([
-            'message' => 'Success',
-            'data' => $booking
-        ]);
+            return response()->json([
+                'message' => 'Success',
+                'data' => $booking
+            ]);
+        } else {
+            $booking['is_photographer'] = "NO I AM NOT";
+            return response()->json([
+                'message' => 'Success',
+                'data' => $booking
+            ]);
+        }
+
+        
     }
 
     public function getAllBooking(Request $request)

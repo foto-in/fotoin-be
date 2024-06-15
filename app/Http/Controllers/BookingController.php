@@ -10,7 +10,7 @@ use App\Models\User;
 
 class BookingController extends Controller
 {
-    public function getDetailBookingPhotographer($booking_id)
+    public function getDetailBookingPhotographer($booking_id, Request $request)
     {
         $user = $request->user(); 
 
